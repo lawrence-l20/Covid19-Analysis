@@ -1,0 +1,316 @@
+---
+title: "Project 1 Code"
+output: html_notebook
+---
+
+
+
+```{r}
+National_Subset<- read.csv("COVID_19_National_Subset_CSV.csv")
+
+Texas_Subset<- read.csv("COVID_19_Texas_Subset_CSV.csv")
+
+
+national_fixed<-National_Subset
+
+national_fixed$aggregate_time_travel_work <- ifelse(is.na(national_fixed$aggregate_time_travel_work), 263630, national_fixed$aggregate_time_travel_work)
+
+
+national_fixed$Percent_income_spent_on_rent <- ifelse(is.na(national_fixed$Percent_income_spent_on_rent), 28.2, national_fixed$Percent_income_spent_on_rent)
+
+
+national_fixed$median_year_structure_built <- ifelse(is.na(national_fixed$median_year_structure_built), 1977, national_fixed$median_year_structure_built)
+
+
+
+
+
+
+
+
+
+
+
+
+df_National_Subset_NONAN <- National_Subset[complete.cases(National_Subset), ]
+
+df_Texas_Subset_NONAN <- Texas_Subset[complete.cases(Texas_Subset), ]
+
+options(scipen = 999)
+
+mean_attw <- mean(df_National_Subset_NONAN$aggregate_time_travel_work)
+median_attw <- median(df_National_Subset_NONAN$aggregate_time_travel_work)
+
+mean_pisor <- mean(df_National_Subset_NONAN$Percent_income_spent_on_rent)
+median_pisor <- median(df_National_Subset_NONAN$Percent_income_spent_on_rent)
+
+mean_mysb <- mean(df_National_Subset_NONAN$median_year_structure_built)
+median_mysb <- median(df_National_Subset_NONAN$median_year_structure_built)
+
+
+df_National_Subset_NONAN$index <- 1:nrow(df_National_Subset_NONAN)
+
+
+
+
+hist(df_National_Subset_NONAN[, "aggregate_time_travel_work"], main = "Histogram of Travel Time to Work", xlab = "Aggregate Travel Time to Work Per County", ylab = "Frequency", col="blue")
+
+abline(v = mean_attw, col = "green")
+abline(v = median_attw, col = "red")
+
+print(median_mysb)
+```
+
+
+
+
+```{r}
+plot(df_National_Subset_NONAN$index, df_National_Subset_NONAN$aggregate_time_travel_work, 
+     main = "Histogram of Travel Time to Work", xlab = "Each of the counties", ylab = "Aggregate time to work",ylim=c(0,20000000))
+
+abline(h = mean_attw, col = "green")
+abline(h = median_attw, col = "red")
+
+```
+
+```{r} 
+n_greater_than_mean <- sum(df_National_Subset_NONAN$median_year_structure_built > mean_mysb)
+n_less_than_mean <- sum(df_National_Subset_NONAN$median_year_structure_built < mean_mysb)
+
+
+n_greater_than_median <- sum(df_National_Subset_NONAN$median_year_structure_built > median_mysb)
+n_less_than_median <- sum(df_National_Subset_NONAN$median_year_structure_built < median_mysb)
+
+print(n_greater_than_mean)
+print(n_less_than_mean)
+
+print(n_greater_than_median)
+print(n_less_than_median)
+
+```
+```{r} 
+summary(national_fixed)
+```
+
+
+```{r}
+table_pop <- table(national_fixed$Population_1_year_and_over)
+mode_pop <- as.numeric(names(table_pop)[which.max(table_pop)])
+print(mode_pop)
+
+table_confirmed <- table(national_fixed$Confirmed)
+mode_conf <- as.numeric(names(table_confirmed)[which.max(table_confirmed)])
+print(mode_conf)
+
+
+table_death <- table(national_fixed$Deaths)
+mode_death <- as.numeric(names(table_death)[which.max(table_death)])
+print(mode_death)
+
+table_struct <- table(national_fixed$median_year_structure_built)
+mode_struct <- as.numeric(names(table_struct)[which.max(table_struct)])
+print(mode_struct)
+
+table_perc_inc_rent <- table(national_fixed$Percent_income_spent_on_rent)
+mode_perc_inc <- as.numeric(names(table_perc_inc_rent)[which.max(table_perc_inc_rent)])
+print(mode_perc_inc)
+
+
+table_perc_male <- table(national_fixed$Percent_Male)
+mode_perc_male <- as.numeric(names(table_perc_male)[which.max(table_perc_male)])
+print(mode_perc_male)
+
+table_median_income <- table(national_fixed$median_income)
+mode_median_income <- as.numeric(names(table_median_income)[which.max(table_median_income)])
+print(mode_median_income)
+
+
+table_grad <- table(national_fixed$Percent_graduate_or_more)
+mode_Percent_graduate_or_more <- as.numeric(names(table_grad)[which.max(table_grad)])
+print(mode_Percent_graduate_or_more)
+
+table_aggr <- table(national_fixed$aggregate_time_travel_work)
+mode_aggregate_time_travel_work <- as.numeric(names(table_aggr)[which.max(table_aggr)])
+print(mode_aggregate_time_travel_work)
+
+table_gen <- table(national_fixed$genie_index)
+mode_genie_index <- as.numeric(names(table_gen)[which.max(table_gen)])
+print(mode_genie_index)
+
+```
+```{r} 
+library("ggplot2")
+Bexar_df <- read.csv(file = "Bexar_Only.csv")
+Harris_df <- read.csv(file = "Harris_Only.csv")
+Dallas_df <- read.csv(file = "Dallas_Only.csv")
+
+
+options(scipen=10000)
+Dallas_df$date <- as.Date( Dallas_df$date, '%m/%d/%Y')
+require(ggplot2)
+ggplot(data = Dallas_df, aes(date, confirmed)) + 
+    geom_line(linewidth=1, colour='blue')  + 
+    ggtitle("Number of confirmed cases in Dallas County 2020 to 2021") + 
+    theme(plot.title = element_text(hjust = 0.5)) + 
+    xlab("Date") + 
+    ylab("Number of Confirmed Cases")
+```
+
+
+``` {r} 
+library(tidyr)
+library(corrplot)
+
+
+
+national_subset<- read.csv(file = "C:/Users/Lawrence_Lim/Box/Spring_2023/Data_Mining/Project_1/Data_Subset/COVID_19_National_Subset_CSV.csv")
+
+national_subset$aggregate_time_travel_work<- replace_na(national_subset$replace_na, 263630)
+
+national_subset$Percent_income_spent_on_rent<- replace_na(national_subset$Percent_income_spent_on_rent, 28.2)
+
+national_subset$median_year_structure_built<- replace_na(national_subset$median_year_structure_built, 1977)
+
+
+
+df <- subset(national_subset, select = -County_Name)
+national_subset_quantitative_only<-subset(df, select = -State)
+
+national_subset_quantitative_only.cor=cor(national_subset_quantitative_only)
+print(national_subset_quantitative_only.cor)
+
+
+
+corrplot(national_subset_quantitative_only.cor, addCoef.col = 1)
+
+
+```
+
+
+
+
+```{r} 
+library("ggplot2")
+library("reshape2")
+library("maps")
+Bexar_df <- read.csv(file = "C:/Users/Lawrence_Lim/Box/Spring_2023/Data_Mining/Project_1/Data_Subset/Bexar_Only.csv")
+Harris_df <- read.csv(file = "C:/Users/Lawrence_Lim/Box/Spring_2023/Data_Mining/Project_1/Data_Subset/Harris_Only.csv")
+Dallas_df <- read.csv(file = "C:/Users/Lawrence_Lim/Box/Spring_2023/Data_Mining/Project_1/Data_Subset/Dallas_Only.csv")
+
+
+options(scipen=10000)
+Dallas_df$date <- as.Date( Dallas_df$date, '%m/%d/%Y')
+require(ggplot2)
+ggplot( data = Dallas_df, aes( date, confirmed)) + geom_line(size=1, colour='blue')  + ggtitle("                                     Number of confirmed cases in Dallas County 2020 to 2021")+ theme(plot.title = element_text(hjust = 0.5))+ xlab("Date") + ylab("Number of Confirmed Cases")
+
+
+national_subset<- read.csv(file = "C:/Users/Lawrence_Lim/Box/Spring_2023/Data_Mining/Project_1/Data_Subset/COVID_19_National_Subset_CSV.csv")
+
+
+library(dplyr)
+
+
+# use aggregate() to sum col1 by col2
+sum_by_state <- aggregate(Deaths ~ State, data = national_subset, sum)
+
+# 
+# ggplot(national_subset, aes(x = Postal, y = Population)) +
+#   geom_bar(stat = "identity", fill = "deeppink4") +
+#   scale_y_continuous(breaks = seq(0, max(national_subset$Population), 2000000)) +
+#   labs(title = "National Population by State", y = "Population (in millions)")
+
+
+
+library(tidyr)
+library(corrplot)
+
+
+
+national_subset<- read.csv(file = "C:/Users/Lawrence_Lim/Box/Spring_2023/Data_Mining/Project_1/Data_Subset/COVID_19_National_Subset_CSV.csv")
+
+national_subset$aggregate_time_travel_work<- replace_na(national_subset$replace_na, 263630)
+
+national_subset$Percent_income_spent_on_rent<- replace_na(national_subset$Percent_income_spent_on_rent, 28.2)
+
+national_subset$median_year_structure_built<- replace_na(national_subset$median_year_structure_built, 1977)
+
+
+length(national_subset$aggregate_time_travel_work) == length(national_subset$median_income)
+
+print(length(national_subset$aggregate_time_travel_work))
+print(length(national_subset$median_income))
+
+# Use subset() to create a new dataframe with only rows where the state column equals "CA"
+national_subset_Texas <- subset(national_subset, State == "TX")
+
+# View the new dataframe
+
+national_subset_California <- subset(national_subset, State == "CA")
+
+national_subset_Arizona <- subset(national_subset, State == "AZ")
+
+national_subset_Florida <- subset(national_subset, State == "FL")
+
+national_subset_Lousiana <- subset(national_subset, State == "LA")
+
+
+Mode <- function(x) {
+  uniqx <- unique(x)
+  uniqx[which.max(tabulate(match(x, uniqx)))]
+}
+
+mode_cal<-Mode(national_subset_California$Confirmed)
+
+mode_ariz<-Mode(national_subset_Arizona$Confirmed)
+
+mode_Fl<-Mode(national_subset_Florida$Confirmed)
+
+mode_TX<- Mode(national_subset_Texas$Confirmed)
+
+print(mode_cal)
+
+print(mode_ariz)
+
+print(mode_Fl)
+
+print(mode_TX)
+
+ggplot(national_subset_Florida, aes(x = "", y = Confirmed)) + 
+  geom_violin(trim = FALSE, fill="darkgreen") +
+  labs(x = "Florida", y = "Confirmed Cases") +
+  theme_bw()
+
+
+ggplot(national_subset_California, aes(x = "", y = Confirmed)) + 
+  geom_violin(trim = FALSE, fill="darkgreen") +
+  labs(x = "Florida", y = "Confirmed Cases") +
+  theme_bw()
+
+
+ggplot(national_subset_Arizona, aes(x = "", y = Confirmed)) + 
+  geom_violin(trim = FALSE, fill="darkgreen") +
+  labs(x = "Florida", y = "Confirmed Cases") +
+  theme_bw()
+
+ggplot(national_subset_Texas, aes(x = "", y = Confirmed)) + 
+  geom_violin(trim = FALSE, fill="darkgreen") +
+  labs(x = "Florida", y = "Confirmed Cases") +
+  theme_bw()
+
+
+dallas_houston_chicago<- read.csv(file = "C:/Users/Lawrence_Lim/Box/Spring_2023/Data_Mining/Project_1/Data_Subset/COVID_19_Dallas_Houston_Chicago.csv")
+
+
+dallas_houston_chicago$Date <- as.Date(dallas_houston_chicago$Date, format="%m/%d/%Y")
+dev.off()
+
+
+ggplot(dallas_houston_chicago, aes(Date)) + 
+  geom_line(aes(y=Confirmed_Cases_Dallas, colour="Dallas"), size=1) + 
+  geom_line(aes(y=Confirmed_Cases_Chicago, colour="Chicago"),size=1) +
+  geom_line(aes(y=Confirmed_Cases_Houston, colour="Houston"),size=1) +
+  labs(x="Date", y="Confirmed Cases", colour="City") +
+  ggtitle("Confirmed Cases by City") +
+  theme(plot.title = element_text(hjust = 0.5))
+
+```
