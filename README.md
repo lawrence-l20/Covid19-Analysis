@@ -32,7 +32,11 @@ In this part of the project, I'm analyzing COVID-19 data to classify U.S. counti
 
 
 
-#R_Code Folder and 
+#R_Code Folder and Reports Folder:
+The R_Code Folder contains each project's files and some of the R Code snippets used to produce the visualizations and statistics in the report. Some of the smaller subset files (ex: Dallas_only.csv, Bexar_only.csv, etc...) were created by extracting/organizing the relevant attributes from the original subset file. This was either done with R or Excel depending on the file.
+
+NOTE: The read_csv lines in each of the R code files are done to read from the file directory on my computer. If you wish to run some of the code, adjust the read_csv to read from wherever you choose to save the datasets. 
+
 
 
 
