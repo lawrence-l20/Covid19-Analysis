@@ -1,0 +1,423 @@
+#CORRELATION COEFFICIENTS
+
+<!-- # Load data from csv file -->
+
+<!-- my_data  <- read.csv("C:/Users/Lawrence/Box/Spring_2023/Data_Mining/Project_2/COVID_19_National_Subset_CSV.csv") -->
+
+<!-- # Select relevant columns for analysis -->
+
+<!-- variables <- c('County_Name', 'State', 'Population_1_year_and_over', 'Confirmed', 'Deaths', 'geo_id', 'median_year_structure_built', 'Percent_income_spent_on_rent', 'Percent_Male', 'median_income', 'Percent_graduate_or_more', 'aggregate_time_travel_work', 'genie_index') -->
+
+<!-- data2 <- my_data[, variables] -->
+
+<!-- # Calculate correlation coefficients between features and target variable -->
+
+<!-- corr<-cor(data2[,-c(1, 2, 6)]) -->
+
+<!-- corr_deaths<-corr[,'Deaths'] -->
+
+<!-- # Sort features by correlation coefficient -->
+
+<!-- sorted_corr<-sort(corr_deaths, decreasing = TRUE) -->
+
+<!-- # Create barplot of sorted correlation coefficients -->
+
+<!-- barplot(sorted_corr, main = 'Correlation Coefficients with Deaths', xlab = 'Features', ylab = 'Correlation Coefficients', names.arg = names(sorted_corr)) -->
+
+<!-- # Add correlation coefficient values to plot -->
+
+<!-- text(x = 1:length(sorted_corr), y = sorted_corr, labels = paste0(round(sorted_corr*100), '%'), pos = 3, cex = 0.8) -->
+
+<!-- # Display plot -->
+
+#PCA ANALYSIS
+
+<!-- # Load data from csv file -->
+
+<!-- my_data <- read.csv("C:/Users/Lawrence_Lim/Box/Spring_2023/Data_Mining/Project_2/COVID_19_National_Subset_CSV.csv") -->
+
+<!-- # Remove any rows with missing values -->
+
+<!-- my_data <- my_data[complete.cases(my_data),] -->
+
+<!-- # Select relevant columns for analysis -->
+
+<!-- variables <- c('County_Name', 'State', 'Population_1_year_and_over', 'Confirmed', 'Deaths', 'geo_id', 'median_year_structure_built', 'Percent_income_spent_on_rent', 'Percent_Male', 'median_income', 'Percent_graduate_or_more', 'aggregate_time_travel_work', 'genie_index') -->
+
+<!-- data2 <- my_data[, variables] -->
+
+<!-- # Normalize data -->
+
+<!-- data2[, -c(1, 2)] <- scale(data2[, -c(1, 2)]) -->
+
+<!-- # Perform PCA -->
+
+<!-- pca <- prcomp(data2[, -c(1, 2)], center = TRUE, scale. = TRUE) -->
+
+<!-- # Plot results in red -->
+
+<!-- plot(pca, type = "l", col = "red",main = "Principal Component Analysis of national dataset", xlab= "principal component") -->
+
+<!-- # Load data from csv file -->
+
+<!-- my_data <- read.csv("C:/Users/Lawrence_Lim/Box/Spring_2023/Data_Mining/Project_2/COVID_19_National_Subset_CSV.csv") -->
+
+<!-- # Identify numeric columns -->
+
+<!-- numeric_cols <- sapply(my_data, is.numeric) -->
+
+<!-- # Calculate medians for numeric columns -->
+
+<!-- medians <- apply(my_data[, numeric_cols], 2, median, na.rm = TRUE) -->
+
+<!-- # Impute missing values with column medians -->
+
+<!-- my_data[, numeric_cols][is.na(my_data[, numeric_cols])] <- rep(medians, each = sum(numeric_cols))[is.na(my_data[, numeric_cols])] -->
+
+<!-- # Select relevant columns for analysis -->
+
+<!-- variables <- c('County_Name', 'State', 'Population_1_year_and_over', 'Confirmed', 'Deaths', 'geo_id', 'median_year_structure_built', 'Percent_income_spent_on_rent', 'Percent_Male', 'median_income', 'Percent_graduate_or_more', 'aggregate_time_travel_work', 'genie_index') -->
+
+<!-- colnames(my_data) -->
+
+<!-- data <- my_data[, variables] -->
+
+<!-- # Fit a linear regression model -->
+
+<!-- model <- lm(Confirmed ~ ., data = data) -->
+
+<!-- # Calculate variance-covariance matrix -->
+
+<!-- library(sandwich) -->
+
+<!-- vcov_matrix <- vcovHC(model) -->
+
+<!-- vcov_matrix -->
+
+<!-- # Print variance inflation factors -->
+
+<!-- library(car) -->
+
+<!-- vif_scores <- vif(model) -->
+
+<!-- for (i in 1:length(vif_scores)) { -->
+
+<!--   print(paste(names(vif_scores)[i], vif_scores[i])) -->
+
+}
+
+<!-- my_data  <- read.csv("/Users/lawrencelim/Library/CloudStorage/Box-Box/Spring_2023/Data_Mining/Project_2/COVID_19_National_Subset_CSV.csv") -->
+
+<!-- my_data -->
+
+<!-- # Select relevant columns for analysis -->
+
+<!-- variables <- c("County_Name", "State", "Population_1_year_and_over", "Confirmed", "Deaths", "geo_id", "median_year_structure_built", "Percent_income_spent_on_rent", "Percent_Male", "median_income", "Percent_graduate_or_more", "aggregate_time_travel_work", "genie_index") -->
+
+<!-- # Remove variables with perfect multicollinearity -->
+
+<!-- vif_data <- data[, -c(1, 2, 6)] -->
+
+<!-- # Calculate VIF scores for each variable -->
+
+<!-- vif_scores <- rep(NA, ncol(vif_data)) -->
+
+<!-- for (i in 1:ncol(vif_data)) { -->
+
+<!--   model <- lm(vif_data[,i] ~ ., data = vif_data[,-i]) -->
+
+<!--   rsq <- summary(model)$r.squared -->
+
+<!--   vif_scores[i] <- 1 / (1 - rsq) -->
+
+<!-- } -->
+
+<!-- # Print VIF scores and corresponding attributes -->
+
+<!-- for (i in 1:length(vif_scores)) { -->
+
+<!--   print(paste(names(vif_data)[i], vif_scores[i])) -->
+
+<!-- } -->
+
+<!-- # create a named vector with the given data -->
+
+<!-- data <- c("Population_1_year_and_over" = 74.7074386601978, -->
+
+<!--           "Confirmed" = 18.805238964219, -->
+
+<!--           "Deaths" = 8.41567399863859, -->
+
+<!--           "median_year_structure_built" = 1.16025793916528, -->
+
+<!--           "Percent_income_spent_on_rent" = 1.42756302364541, -->
+
+<!--           "Percent_Male" = 1.06513043046036, -->
+
+<!--           "median_income" = 3.00481790552078, -->
+
+<!--           "Percent_graduate_or_more" = 2.60506036321488, -->
+
+<!--           "aggregate_time_travel_work" = 59.803735561525, -->
+
+<!--           "genie_index" = 1.64956124169509) -->
+
+<!-- # create a data frame with the attribute names and VIF values -->
+
+<!-- df <- data.frame(Attribute = names(data), VIF = data) -->
+
+<!-- library(ggplot2) -->
+
+<!-- ggplot(df, aes(x = Attribute, y = VIF)) + -->
+
+<!--   geom_bar(stat = "identity") + -->
+
+<!--   labs(title = "Variance Inflation Factors", -->
+
+<!--        x = "Attribute", -->
+
+<!--        y = "VIF") -->
+
+# Load data from csv file
+
+my_data <-
+read.csv("/Users/lawrencelim/Library/CloudStorage/Box-Box/Spring_2023/Data_Mining/Project_2/COVID_19_National_Subset_CSV.csv")
+
+# Remove any rows with missing values
+
+my_data <- my_data[complete.cases(my_data),]
+
+# Select relevant columns for analysis
+
+variables <- c('County_Name', 'State', 'Population_1_year_and_over',
+'Confirmed', 'Deaths', 'geo_id', 'median_year_structure_built',
+'Percent_income_spent_on_rent', 'Percent_Male', 'median_income',
+'Percent_graduate_or_more', 'aggregate_time_travel_work', 'genie_index')
+data2 <- my_data[, variables]
+
+# Normalize data
+
+data2[, -c(1, 2)] <- scale(data2[, -c(1, 2)])
+
+# Perform PCA
+
+pca <- prcomp(data2[, -c(1, 2)], center = TRUE, scale. = TRUE)
+
+# Plot results with loadings
+
+biplot(pca, main = "Principal Component Analysis of national dataset
+with loadings")
+
+#PCA Heatmap # Load data from csv file my_data <-
+read.csv("/Users/lawrencelim/Library/CloudStorage/Box-Box/Spring_2023/Data_Mining/Project_2/COVID_19_National_Subset_CSV.csv")
+
+# Remove any rows with missing values
+
+my_data <- my_data[complete.cases(my_data),]
+
+# Select relevant columns for analysis
+
+variables <- c('County_Name', 'State', 'Population_1_year_and_over',
+'Deaths', 'geo_id', 'median_year_structure_built',
+'Percent_income_spent_on_rent', 'Percent_Male', 'median_income',
+'Percent_graduate_or_more', 'genie_index') 
+data2 <- my_data[, variables]
+
+# Normalize data
+
+data2[, -c(1, 2)] <- scale(data2[, -c(1, 2)])
+
+# Perform PCA
+
+pca <- prcomp(data2[, -c(1, 2)], center = TRUE, scale. = TRUE)
+
+# Create heatmap of loadings for all principal components
+
+library(ggplot2)
+library(reshape2) 
+
+loadings_df <- data.frame(variables = rownames(pca$rotation), PCA = paste0("PC", 1:ncol(pca$rotation)), value = c(pca$rotation))
+loadings_melted <- melt(loadings_df, id.vars = c("variables", "PCA"))
+
+ggplot(loadings_melted, aes(x = variable, y = PCA)) + 
+  geom_tile(aes(fill = value), color = "white") + 
+  scale_fill_gradient2(low = "blue", high = "red", midpoint = 0) + 
+  theme_minimal() + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5)) + 
+  ggtitle(paste0("Heatmap of Loadings for Principal Components 1 to ", ncol(pca$rotation)))
+
+
+# PCA Scree Graph
+
+# Load data from csv file
+
+my_data <-
+read.csv("/Users/lawrencelim/Library/CloudStorage/Box-Box/Spring_2023/Data_Mining/Project_2/COVID_19_National_Subset_CSV.csv")
+
+# Remove any rows with missing values
+
+my_data <- my_data[complete.cases(my_data),]
+
+# Select relevant columns for analysis
+
+variables <- c('County_Name', 'State', 'Population_1_year_and_over','Deaths', 'geo_id', 'median_year_structure_built','Percent_income_spent_on_rent','Percent_Male', 'median_income','Percent_graduate_or_more', 'genie_index') 
+data2 <- my_data[, variables]
+
+# Normalize data
+
+data2[, -c(1, 2)] <- scale(data2[, -c(1, 2)])
+
+# Perform PCA
+
+pca <- prcomp(data2[, -c(1, 2)], center = TRUE, scale. = TRUE)
+
+# Create scree plot
+
+plot(pca, type = "l")
+
+###Loading Matrix # Load data from csv file my_data <-
+read.csv("/Users/lawrencelim/Library/CloudStorage/Box-Box/Spring_2023/Data_Mining/Project_2/COVID_19_National_Subset_CSV.csv")
+
+# Remove any rows with missing values
+
+my_data <- my_data[complete.cases(my_data),]
+
+# Select relevant columns for analysis
+
+variables <- c('County_Name', 'State', 'Population_1_year_and_over',
+'Deaths', 'median_year_structure_built', 'Percent_income_spent_on_rent',
+'Percent_Male', 'median_income', 'Percent_graduate_or_more',
+'genie_index') data2 <- my_data[, variables]
+
+# Normalize data
+
+data2[, -c(1, 2)] <- scale(data2[, -c(1, 2)])
+
+# Perform PCA
+
+pca <- prcomp(data2[, -c(1, 2)], center = TRUE, scale. = TRUE)
+
+# Print rotation matrix
+
+print(pca$rotation, digits = 3)
+
+library(dplyr)
+
+#pairwise distance code # Load data from csv file df <-
+read.csv("/Users/lawrencelim/Library/CloudStorage/Box-Box/Spring_2023/Data_Mining/Project_2/COVID_19_National_Subset_CSV.csv")
+
+# Remove N/A values
+
+df <- na.omit(df)
+
+# Create a unique identifier for each county
+
+df$County_State <- paste(df$County_Name, ",", df$State) df$County_ID <-
+as.numeric(factor(df$County_State))
+
+# Drop the original categorical columns
+
+df <- df[, !(names(df) %in% c("County_Name", "State", "County_State"))]
+
+# Normalize the data
+
+df_norm <- scale(df)
+
+# Calculate the euclidean distance matrix
+
+dist_mat <- dist(df_norm, method="euclidean") dist_euc <-
+as.matrix(dist_mat)
+
+# Calculate the correlation between the original data and the euclidean distance matrix
+
+corr <- cor(rowMeans(df_norm), rowMeans(dist_euc))
+
+print("Correlation between original data and euclidean distance:")
+print(corr)
+
+# Load data from csv file
+
+df <- read.csv("/Users/lawrencelim/Library/CloudStorage/Box-Box/Spring_2023/Data_Mining/Project_2/COVID_19_National_Subset_CSV.csv")
+
+# Remove N/A values
+
+df <- na.omit(df)
+
+# Create a unique identifier for each county
+
+df$County_State <- paste(df$County_Name, ",", df$State) 
+df$County_ID <- as.numeric(factor(df$County_State))
+
+# Drop the original categorical columns
+
+df <- df[, !(names(df) %in% c("County_Name", "State", "County_State"))]
+
+# Normalize the data
+
+df_norm <- scale(df)
+
+# Calculate the Manhattan distance matrix
+
+dist_man <- as.matrix(dist(df_norm, method="manhattan"))
+
+# Calculate the correlation between the original data and the Manhattan distance matrix
+
+corr_man <- cor(rowMeans(df_norm), rowMeans(dist_man))
+
+print("Correlation between original data and Manhattan distance:")
+print(corr_man)
+
+#Correlation visual # Load libraries
+
+library(dplyr) 
+library(ggplot2)
+
+# Load data from csv file
+
+df <- read.csv("/Users/lawrencelim/Library/CloudStorage/Box-Box/Spring_2023/Data_Mining/Project_2/COVID_19_National_Subset_CSV.csv")
+
+# Remove N/A values
+
+df <- na.omit(df)
+
+# Create a unique identifier for each county
+
+df$County_State <- paste(df$County_Name, ",", df$State) 
+df$County_ID <-as.numeric(factor(df$County_State))
+
+# Drop the original categorical columns
+
+#Note: County ID is created as a numeric version of the state and county
+df <- df[, !(names(df) %in% c("County_Name", "State", "County_State"))]
+
+# Normalize the data
+
+df_norm <- scale(df)
+
+# Calculate the euclidean distance matrix
+
+dist_mat <- dist(df_norm, method="euclidean") 
+dist_euc <- as.matrix(dist_mat)
+
+# Calculate the correlation between the original data and the euclidean distance matrix
+
+corr_euc <- cor(rowMeans(df_norm), rowMeans(dist_euc))
+
+# Calculate the Manhattan distance matrix
+
+dist_man <- as.matrix(dist(df_norm, method="manhattan"))
+
+# Calculate the correlation between the original data and the Manhattan distance matrix
+
+corr_man <- cor(rowMeans(df_norm), rowMeans(dist_man))
+
+# Create a dataframe with the correlation values
+
+df_corr <- data.frame(Method = c("Orig. Data v Euclidean", "Orig. Data v Manhattan"), Correlation = c(corr_euc, corr_man))
+
+# Create a bar chart with the correlation values
+
+ggplot(df_corr, aes(x = Method, y = Correlation, fill = Method)) + geom_bar(stat="identity", width = 0.5) + geom_text(aes(label = round(Correlation, 2)),vjust = 1.5, size = 5) + theme_minimal() +labs(title = "Comparison of Correlation Values", x = "Method", y ="Correlation") + theme(plot.title = element_text(hjust = 0.5, size = 16, face = "bold"), axis.text = element_text(size = 14), axis.title = element_text(size = 14), legend.position = "none")
+
+
+
